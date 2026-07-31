@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 function App() {
-const [productos] = useState([
+  const [productos] = useState([
     { id: 1, nombre: "Dento de 150 con cepillo", precio: 6.5 },
     { id: 2, nombre: "Jabón líquido Aval", precio: 6.0 },
     { id: 3, nombre: "Talco chiquilin", precio: 12.0 },
@@ -47,6 +47,42 @@ const [productos] = useState([
     { id: 43, nombre: "Durazno Compas", precio: 10.0 },
   ]);
   const [busqueda, setBusqueda] = useState("");
+  // Función para escuchar y responder el precio por voz
+const hablarYBuscar = () => {
+  // Verificar si el navegador soporta reconocimiento de voz
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if (!SpeechRecognition) {
+    alert("Tu navegador no soporta búsqueda por voz. Prueba en Chrome o Edge.");
+    return;
+  }
+
+  const recognition = new SpeechRecognition();
+  recognition.lang = "es-ES"; // Configurado en español
+
+  recognition.onresult = (event) => {
+    const textoDicho = event.results[0][0].transcript.toLowerCase();
+    setBusqueda(textoDicho); // Actualiza la barra de búsqueda visualmente
+
+    // Buscar si algún producto coincide con lo que se dijo
+    const encontrado = productos.find((p) =>
+      p.nombre.toLowerCase().includes(textoDicho)
+    );
+
+    // Preparar el mensaje de respuesta por altavoz
+    const voz = new SpeechSynthesisUtterance();
+    if (encontrado) {
+      voz.text = `El precio de ${encontrado.nombre} es ${encontrado.precio} soles`;
+    } else {
+      voz.text = `Lo siento, no encontré el producto ${textoDicho}`;
+    }
+
+    // El navegador habla la respuesta
+    window.speechSynthesis.speak(voz);
+  };
+
+  recognition.start();
+};
   const productosFiltrados = productos.filter((producto) =>
   producto.nombre.toLowerCase().includes(busqueda.toLowerCase())
 );
@@ -66,6 +102,22 @@ const [productos] = useState([
     border: "1px solid #ccc",
   }}
 />
+<button 
+  onClick={hablarYBuscar}
+  style={{
+    padding: "10px 15px",
+    marginLeft: "10px",
+    backgroundColor: "#25D366",
+    color: "white",
+    border: "none",
+    borderRadius: "8px",
+    cursor: "pointer",
+    fontWeight: "bold"
+  }}
+>
+  🎤 Hablar
+</button>
+
       <table
         border="1"
         cellPadding="10"

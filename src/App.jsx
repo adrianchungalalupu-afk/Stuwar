@@ -45,6 +45,9 @@ function App() {
     { id: 41, nombre: "Pañitos humedos ", precio: 2.0 },
     { id: 42, nombre: "Durazno Aconcagua", precio: 10.0 },
     { id: 43, nombre: "Durazno Compas", precio: 10.0 },
+    { id: 44, nombre: "Chocolisto", precio: 12.5 },
+    { id: 45, nombre: "Mermelada Deli 950g", precio: 10.0 },
+    { id: 46, nombre: "Mermelada Deli 290g", precio: 10.0 },
   ]);
   const [busqueda, setBusqueda] = useState("");
   // Función para escuchar y responder el precio por voz

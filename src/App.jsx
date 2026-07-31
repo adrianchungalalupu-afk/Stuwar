@@ -88,7 +88,7 @@ const hablarYBuscar = () => {
 );
   return (
     <div style={{ padding: "30px", fontFamily: "Arial" }}>
-      <h1>📦 Sistema de Productos</h1>
+      <h1>📦 Yovanny's Store</h1>
 <input
   type="text"
   placeholder="🔍 Buscar producto..."
@@ -115,7 +115,7 @@ const hablarYBuscar = () => {
     fontWeight: "bold"
   }}
 >
-  🎤 Hablar
+  🎤 Consultar
 </button>
 
       <table

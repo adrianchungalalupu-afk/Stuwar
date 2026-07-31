@@ -32,9 +32,19 @@ const [productos] = useState([
     { id: 28, nombre: "Dofi 1kg", precio: 5.50 },
     { id: 29, nombre: "Patito 1kg", precio: 5.50 },
     { id: 30, nombre: "Trome 1kg", precio: 5.0 },
-    { id: 31, nombre: "Amen colonia", precio: 15.0 },
-    { id: 32, nombre: "Amen colonia", precio: 15.0 },
-    { id: 33, nombre: "Amen colonia", precio: 15.0 },
+    { id: 31, nombre: "Ariel 720", precio: 9.0 },
+    { id: 32, nombre: "Marsella 730", precio:   7.0 },
+    { id: 33, nombre: "Bolivar 730", precio: 9.0 },
+    { id: 34, nombre: "Bolivar 730", precio: 9.0 },
+    { id: 35, nombre: "Bolivar 730", precio: 9.0 },
+    { id: 36, nombre: "Bolivar 730", precio: 9.0 },
+    { id: 37, nombre: "Bolivar 730", precio: 9.0 },
+    { id: 38, nombre: "Bolivar 730", precio: 9.0 },
+    { id: 39, nombre: "Bolivar 730", precio: 9.0 },
+    { id: 40, nombre: "Bolivar 730", precio: 9.0 },
+    { id: 41, nombre: "Bolivar 730", precio: 9.0 },
+    { id: 42, nombre: "Bolivar 730", precio: 9.0 },
+    { id: 43, nombre: "Bolivar 730", precio: 9.0 },
   ]);
   const [busqueda, setBusqueda] = useState("");
   const productosFiltrados = productos.filter((producto) =>

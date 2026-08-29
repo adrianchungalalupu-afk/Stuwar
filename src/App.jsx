@@ -1,166 +1,62 @@
-import { useState } from "react";
-import "./App.css";
+import { useEffect, useState } from 'react';
+import { Html5QrcodeScanner } from 'html5-qrcode';
+import './App.css';
+
+// Base de datos local de prueba
+const productosDB = {
+  "7754487003056": { nombre: "Galletas Soda 6pk", precio: 2.50 },
+  "7750987654321": { nombre: "Gaseosa 500ml", precio: 3.80 }
+};
+
 function App() {
-  const [productos] = useState([
-    { id: 1, nombre: "Dento de 150 con cepillo", precio: 6.5 },
-    { id: 2, nombre: "Jabón líquido Aval", precio: 6.0 },
-    { id: 3, nombre: "Talco chiquilin", precio: 12.0 },
-    { id: 4, nombre: "Desodorante Rexona", precio: 15.0 },
-    { id: 5, nombre: "Desodorante Lady Speed", precio: 14.0 },
-    { id: 6, nombre: "Jabón Protex", precio: 4.0 },
-    { id: 7, nombre: "Jabón Moncler", precio: 4.8 },
-    { id: 8, nombre: "Jabón Neko", precio: 4.0 },
-    { id: 9, nombre: "Jabón Heno de Pravia", precio: 5.5 },
-    { id: 10, nombre: "Jabón líquido Orion", precio: 5.0 },
-    { id: 11, nombre: "Savital frasco", precio: 13.50 },
-    { id: 12, nombre: "Nutrivela frasco", precio: 15.00 },
-    { id: 13, nombre: "Sedal frasco", precio: 13.50 },
-    { id: 14, nombre: "Pantene de 400ml", precio: 19.0 },
-    { id: 15, nombre: "Pantene acondicionador", precio: 19.0 },
-    { id: 16, nombre: "H y s de 375ml", precio: 18.0 },
-    { id: 17, nombre: "H y s de 180ml", precio: 10.0 },
-    { id: 18, nombre: "H y s de 90ml", precio: 5.0 },
-    { id: 19, nombre: "Pantene de 100ml", precio: 5.0 },
-    { id: 20, nombre: "Ballerina frasco", precio: 11.0 },
-    { id: 21, nombre: "Ballerina cojin", precio: 10.0 },
-    { id: 22, nombre: "Amen cojin", precio: 22.0 },
-    { id: 23, nombre: "Amen acondicionador", precio: 18.0 },
-    { id: 24, nombre: "Milo lata", precio: 22.0 },
-    { id: 25, nombre: "Eco lata", precio: 14.0 },
-    { id: 26, nombre: "Kirma lata", precio: 24.0 },
-    { id: 27, nombre: "Orion 5kg balde", precio: 33.00 },
-    { id: 28, nombre: "Orion 5kg", precio: 28.50 },
-    { id: 29, nombre: "Patito 1kg", precio: 5.50 },
-    { id: 30, nombre: "Trome 1kg", precio: 5.0 },
-    { id: 31, nombre: "Ariel 720g", precio: 9.0 },
-    { id: 32, nombre: "Marsella 730g", precio:   7.0 },
-    { id: 33, nombre: "Bolivar 730g", precio: 9.0 },
-    { id: 34, nombre: "Altomayo frasco", precio: 30.0 },
-    { id: 35, nombre: "Altomayo 90g", precio: 18.0 },
-    { id: 36, nombre: "Altomayo 45g", precio: 9.0 },
-    { id: 37, nombre: "Tuinies 1L", precio: 28.0 },
-    { id: 38, nombre: "Tuinies 500ml", precio: 15.0 },
-    { id: 39, nombre: "Pañitos humedos grande", precio: 6.5 },
-    { id: 40, nombre: "Pañitos humedos mediano", precio: 5.0 },
-    { id: 41, nombre: "Pañitos humedos ", precio: 2.0 },
-    { id: 42, nombre: "Durazno Aconcagua", precio: 10.0 },
-    { id: 43, nombre: "Durazno Compas", precio: 10.0 },
-    { id: 44, nombre: "Chocolisto", precio: 12.5 },
-    { id: 45, nombre: "Mermelada Deli 950g", precio: 13.0 },
-    { id: 46, nombre: "Mermelada Deli 290g", precio: 5.0 },
-    { id: 47, nombre: "Dofi 1kg", precio: 5.50 },
-    { id: 48, nombre: "Dofi 2kg", precio: 11.0 },
-    { id: 49, nombre: "Dofi 4kg", precio: 22.0 },
-    { id: 50, nombre: "Orion 1kg", precio: 6.50 },
-    { id: 51, nombre: "Orion 2kg", precio: 13.0 },
-    { id: 52, nombre: "Orion 4kg", precio: 25.0 },
-    { id: 53, nombre: "Chef 5L", precio: 39.5 },
-    { id: 54, nombre: "Cil 5L", precio: 44.0 },
-    { id: 55, nombre: "Capri 5L", precio: 55.0 },
-    { id: 56, nombre: "Primor 5L", precio: 54.0 },
-    { id: 57, nombre: "Cil 3L", precio: 26.0 },
-    { id: 58, nombre: "Super Fly", precio: 18.0 },
-    { id: 59, nombre: "R Pus", precio: 18.0 },
-    { id: 60, nombre: "Mr Plum", precio: 18.0 },
-    { id: 61, nombre: "Harpic", precio: 20.0 },
-    { id: 62, nombre: "Plop", precio: 18.0 },
-    { id: 63, nombre: "Bolivar frasco", precio: 9.0 },
-  ]);
-  const [busqueda, setBusqueda] = useState("");
-  // Función para escuchar y responder el precio por voz
-const hablarYBuscar = () => {
-  // Verificar si el navegador soporta reconocimiento de voz
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const [producto, setProducto] = useState({ nombre: "Enfoca un código de barras", precio: null });
 
-  if (!SpeechRecognition) {
-    alert("Tu navegador no soporta búsqueda por voz. Prueba en Chrome o Edge.");
-    return;
-  }
+  useEffect(() => {
+    const scanner = new Html5QrcodeScanner("reader", {
+      fps: 10,
+      qrbox: { width: 250, height: 150 }
+    });
 
-  const recognition = new SpeechRecognition();
-  recognition.lang = "es-ES"; // Configurado en español
-
-  recognition.onresult = (event) => {
-    const textoDicho = event.results[0][0].transcript.toLowerCase();
-    setBusqueda(textoDicho); // Actualiza la barra de búsqueda visualmente
-
-    // Buscar si algún producto coincide con lo que se dijo
-    const encontrado = productos.find((p) =>
-      p.nombre.toLowerCase().includes(textoDicho)
+    scanner.render(
+      (codigo) => {
+        if (productosDB[codigo]) {
+          setProducto({
+            nombre: productosDB[codigo].nombre,
+            precio: `S/ ${productosDB[codigo].precio.toFixed(2)}`
+          });
+        } else {
+          setProducto({
+            nombre: `No registrado (${codigo})`,
+            precio: "S/ --.--"
+          });
+        }
+      },
+      (error) => {
+        // Lectura frame a frame
+      }
     );
 
-    // Preparar el mensaje de respuesta por altavoz
-    const voz = new SpeechSynthesisUtterance();
-    if (encontrado) {
-      voz.text = `El precio de ${encontrado.nombre} es ${encontrado.precio} soles`;
-    } else {
-      voz.text = `Lo siento, no encontré el producto ${textoDicho}`;
-    }
+    return () => {
+      scanner.clear().catch(err => console.error(err));
+    };
+  }, []);
 
-    // El navegador habla la respuesta
-    window.speechSynthesis.speak(voz);
-  };
-
-  recognition.start();
-};
-  const productosFiltrados = productos.filter((producto) =>
-  producto.nombre.toLowerCase().includes(busqueda.toLowerCase())
-);
   return (
-    <div style={{ padding: "30px", fontFamily: "Arial" }}>
-      <h1>📦 Yovanny's Store</h1>
-<input
-  type="text"
-  placeholder="🔍 Buscar producto..."
-  value={busqueda}
-  onChange={(e) => setBusqueda(e.target.value)}
-  style={{
-    padding: "10px",
-    width: "300px",
-    marginBottom: "20px",
-    borderRadius: "8px",
-    border: "1px solid #ccc",
-  }}
-/>
-<button 
-  onClick={hablarYBuscar}
-  style={{
-    padding: "10px 15px",
-    marginLeft: "10px",
-    backgroundColor: "#25D366",
-    color: "white",
-    border: "none",
-    borderRadius: "8px",
-    cursor: "pointer",
-    fontWeight: "bold"
-  }}
->
-  🎤 Consultar
-</button>
+    <div id="center">
+      <h2>Escáner de Precios</h2>
+      
+      {/* Contenedor de la cámara */}
+      <div id="reader" style={{ width: '100%', maxWidth: '350px' }}></div>
 
-      <table
-        border="1"
-        cellPadding="10"
-        style={{ borderCollapse: "collapse", width: "100%" }}
-      >
-        <thead>
-          <tr>
-            <th>Producto</th>
-            <th>Precio</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {productosFiltrados.map((producto) => (
-            <tr key={producto.id}>
-              <td>{producto.nombre}</td>
-              <td>S/ {producto.precio.toFixed(2)}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {/* Resultado */}
+      <div style={{ textAlign: 'center', marginTop: '15px' }}>
+        <p style={{ fontSize: '1.2rem', margin: '5px 0' }}>{producto.nombre}</p>
+        <h1 style={{ color: 'var(--accent)', fontSize: '2.5rem', margin: 0 }}>
+          {producto.precio || "$0.00"}
+        </h1>
+      </div>
     </div>
   );
 }
 
-export default App; 
+export default App;

@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Html5QrcodeScanner } from 'html5-qrcode';
 import './App.css';
 
-// Base de datos local de prueba
 const productosBD = {
   "7751851014823": { id: 1, nombre: "Dento de 150 con cepillo", precio: 6.5 },
   "7750890000021": { id: 2, nombre: "Jabón líquido Aval", precio: 6.0 },
@@ -70,51 +69,97 @@ const productosBD = {
 };
 
 function App() {
-  const [producto, setProducto] = useState({ nombre: "Enfoca un código de barras", precio: null });
+  const [lista, setLista] = useState([]);
+  const [ultimo, setUltimo] = useState(null);
 
   useEffect(() => {
+    let ultimoCodigo = "";
+    let tiempoLectura = 0;
+
     const scanner = new Html5QrcodeScanner("reader", {
       fps: 10,
       qrbox: { width: 250, height: 150 }
     });
 
-    scanner.render(
-      (codigo) => {
-        if (productosDB[codigo]) {
-          setProducto({
-            nombre: productosDB[codigo].nombre,
-            precio: `S/ ${productosDB[codigo].precio.toFixed(2)}`
-          });
-        } else {
-          setProducto({
-            nombre: `No registrado (${codigo})`,
-            precio: "S/ --.--"
-          });
-        }
-      },
-      (error) => {
-        // Lectura frame a frame
+    scanner.render((codigo) => {
+      const ahora = Date.now();
+      if (codigo === ultimoCodigo && ahora - tiempoLectura < 2000) return;
+      
+      ultimoCodigo = codigo;
+      tiempoLectura = ahora;
+
+      if (productosBD[codigo]) {
+        const prod = productosBD[codigo];
+        setUltimo(prod);
+        setLista(prev => [...prev, { ...prod, idUnico: Date.now() }]);
+      } else {
+        setUltimo({ nombre: `No registrado (${codigo})`, precio: 0 });
       }
-    );
+    });
 
     return () => {
       scanner.clear().catch(err => console.error(err));
     };
   }, []);
 
-  return (
-    <div id="center">
-      <h2>Escáner de Precios</h2>
-      
-      {/* Contenedor de la cámara */}
-      <div id="reader" style={{ width: '100%', maxWidth: '350px' }}></div>
+  const total = lista.reduce((acc, item) => acc + item.precio, 0);
 
-      {/* Resultado */}
-      <div style={{ textAlign: 'center', marginTop: '15px' }}>
-        <p style={{ fontSize: '1.2rem', margin: '5px 0' }}>{producto.nombre}</p>
-        <h1 style={{ color: 'var(--accent)', fontSize: '2.5rem', margin: 0 }}>
-          {producto.precio || "$0.00"}
-        </h1>
+  // Función para borrar un producto específico por su idUnico
+  const eliminarProducto = (idUnico) => {
+    setLista(prev => prev.filter(item => item.idUnico !== idUnico));
+  };
+
+  const limpiarLista = () => {
+    setLista([]);
+    setUltimo(null);
+  };
+
+  return (
+    <div id="center" style={{ padding: '10px', maxWidth: '400px', margin: '0 auto' }}>
+      <h2>Escáner y Lista de Precios</h2>
+      
+      <div id="reader" style={{ width: '100%' }}></div>
+
+      {ultimo && (
+        <div style={{ textAlign: 'center', margin: '10px 0', padding: '10px', background: '#f0f0f0', borderRadius: '8px' }}>
+          <small>Último escaneado:</small>
+          <p style={{ margin: '2px 0', fontWeight: 'bold' }}>{ultimo.nombre}</p>
+          <span style={{ color: 'green', fontSize: '1.2rem' }}>S/ {ultimo.precio.toFixed(2)}</span>
+        </div>
+      )}
+
+      <div style={{ width: '100%', marginTop: '15px' }}>
+        <h3>Productos ({lista.length})</h3>
+        <ul style={{ listStyle: 'none', padding: 0, maxHeight: '180px', overflowY: 'auto' }}>
+          {lista.map(item => (
+            <li key={item.idUnico} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '6px 0', borderBottom: '1px solid #ccc' }}>
+              <span>{item.nombre}</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <strong>S/ {item.precio.toFixed(2)}</strong>
+                <button 
+                  onClick={() => eliminarProducto(item.idUnico)}
+                  style={{ backgroundColor: '#ff4d4d', color: 'white', border: 'none', borderRadius: '4px', padding: '2px 8px', cursor: 'pointer', fontWeight: 'bold' }}
+                >
+                  ✕
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '15px', borderTop: '2px solid #333', paddingTop: '10px' }}>
+          <h3>Total:</h3>
+          <h2 style={{ color: 'var(--accent)', margin: 0 }}>S/ {total.toFixed(2)}</h2>
+        </div>
+
+        {lista.length > 0 && (
+          <button 
+            onClick={limpiarLista} 
+            style={{ marginTop: '10px', width: '100%', padding: '10px', backgroundColor: '#e74c3c', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
+          >
+            Nueva Cuenta / Limpiar Todo
+          </button>
+        )}
       </div>
     </div>
   );

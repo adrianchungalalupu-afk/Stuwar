@@ -26,9 +26,9 @@ const productosBD = {
   "7804920018779": { id: 21, nombre: "Ballerina cojin", precio: 10.0 },
   "7750128022223": { id: 22, nombre: "Amen cojin", precio: 22.0 },
   "7750128023230": { id: 23, nombre: "Amen acondicionador", precio: 18.0 },
-  "7702024069676": { id: 24, nombre: "Milo lata", precio: 22.0 },
-  "7750001025251": { id: 25, nombre: "Eco lata", precio: 14.0 },
-  "7750001026265": { id: 26, nombre: "Kirma lata", precio: 24.0 },
+  "7702024224525": { id: 24, nombre: "Milo lata", precio: 22.0 },
+  "8445292127240": { id: 25, nombre: "Eco lata", precio: 14.0 },
+  "7891000435793": { id: 26, nombre: "Kirma lata", precio: 24.0 },
   "7750890027271": { id: 27, nombre: "Orion 5kg balde", precio: 33.00 },
   "7750890028288": { id: 28, nombre: "Orion 5kg", precio: 28.50 },
   "7750128029298": { id: 29, nombre: "Patito 1kg", precio: 5.50 },
@@ -36,8 +36,8 @@ const productosBD = {
   "7501001131317": { id: 31, nombre: "Ariel 720g", precio: 9.0 },
   "7750128032328": { id: 32, nombre: "Marsella 730g", precio: 7.0 },
   "7750128033335": { id: 33, nombre: "Bolivar 730g", precio: 9.0 },
-  "7750463001412": { id: 34, nombre: "Altomayo frasco", precio: 30.0 },
-  "7750463035356": { id: 35, nombre: "Altomayo 90g", precio: 18.0 },
+  "7750463004406": { id: 34, nombre: "Altomayo frasco", precio: 30.0 },
+  "7750463005212": { id: 35, nombre: "Altomayo 90g", precio: 18.0 },
   "7750463036363": { id: 36, nombre: "Altomayo 45g", precio: 9.0 },
   "7750000037372": { id: 37, nombre: "Tuinies 1L", precio: 28.0 },
   "7750000038389": { id: 38, nombre: "Tuinies 500ml", precio: 15.0 },
@@ -65,7 +65,10 @@ const productosBD = {
   "7750000060601": { id: 60, nombre: "Mr Plum", precio: 18.0 },
   "7501001061614": { id: 61, nombre: "Harpic", precio: 20.0 },
   "7750000062625": { id: 62, nombre: "Plop", precio: 18.0 },
-  "7750128063632": { id: 63, nombre: "Bolivar frasco", precio: 9.0 }
+  "7750243084345": { id: 63, nombre: "Bolivar frasco plus", precio: 9.0 },
+  "7750243083034": { id: 64, nombre: "Bolivar frasco cuidado total", precio: 9.0 },
+  "7750243084338": { id: 65, nombre: "Bolivar frasco bebe", precio: 9.0 },
+  "7702025120192": { id: 66, nombre: "Ducales", precio: 6.0 }
 };
 
 function App() {

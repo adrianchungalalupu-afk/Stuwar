@@ -81,9 +81,9 @@ const productosBD = {
   "7500435019828": { id: 76, nombre: "H y s de 375ml suave y manejable", precio: 18.0 },
   "7500435019958": { id: 77, nombre: "H y s de 180ml limpieza renovadora", precio: 10.0 },
   "7500435138017": { id: 78, nombre: "H y s de 180ml purificacion capilar", precio: 10.0 },
-  "7506339326468": { id: 18, nombre: "H y s de 90ml men", precio: 5.0 },
-  "7500435258425": { id: 18, nombre: "H y s de 90ml anti-caida", precio: 5.0 },
-  "7500435257084": { id: 18, nombre: "H y s de 90ml anti-comezon", precio: 5.0 },
+  "7506339326468": { id: 79, nombre: "H y s de 90ml men", precio: 5.0 },
+  "7500435258425": { id: 80, nombre: "H y s de 90ml anti-caida", precio: 5.0 },
+  "7500435257084": { id: 81, nombre: "H y s de 90ml anti-comezon", precio: 5.0 },
 
 };
 
